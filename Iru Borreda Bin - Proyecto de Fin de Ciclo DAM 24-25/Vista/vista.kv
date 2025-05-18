@@ -1,0 +1,1308 @@
+# Python 3.13.3
+# kivy 2.3.1
+# kivymd 1.2.0
+
+#:kivy 2.3.1
+#:import Factory kivy.factory.Factory
+#:import Window kivy.core.window
+#:import hex kivy.utils.get_color_from_hex
+
+<ModifyPopup@Popup>:
+    auto_dismiss: False
+    title: 'Configurador de Camisetas (Modificando)'
+    size_hint: (1, 1)
+    resizable: 1
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        orientation: "vertical"
+        adaptive_size: True
+        padding: 0
+        MDTopAppBar:
+            canvas.before:
+                Color:
+                    rgb: hex('#2a3ac9')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            title: "Editor"
+            elevation: 2
+            type_height: "small"
+            canvas:
+                Color:
+                    rgba: 50, 123, 143, 1
+                Line:
+                    width: dp(5)
+                    points: [self.x, self.width]
+        GridLayout:
+            cols: 2
+            Image:
+                source: 'Assets/Imagenes/PlaceholderShirt.png'
+                size: self.texture_size
+                fit_mode: "contain"
+                size_hint_x: 0.35
+            BoxLayout:
+                canvas.before:
+                    Color:
+                        rgba: 50, 123, 143, 1
+                    Line:
+                        width: dp(1.5)
+                        points: [self.width, self.height]
+                canvas:
+                    Color:
+                        rgb: hex('#ffffff')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                orientation: "vertical"
+                adaptive_size: True
+                size_hint_x: 0.65
+                MDTopAppBar:
+                    title: "Opciones de personalización"
+                    elevation: 0
+                    md_bg_color: "#4956cc"
+                    canvas:
+                        Color:
+                            rgba: 50, 123, 143, 1
+                        Line:
+                            width: dp(5)
+                            points: [self.x, self.width]
+                MDTabs:
+                    id: tabs_opciones
+                    allow_stretch: False
+                    fixed_tab_label_width: self.width / 3
+                    do_default_tab: False
+                    background_color: "#4956cc"
+                    indicator_color: "#07c4f7"
+                    tab_indicator_height: "5dp"
+
+                    TabOpcion:
+                        title: "Diseño"
+                        content_text: f"Aquí está el {self.title}"
+
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                height: 300
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_tam
+                                        hint_text: "Seleccione un tamaño"
+                                        values: root.get_tamanos()
+                                        size_hint:None,None
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_tam(spin_tam.text)
+                                        background_color:"327b8f"
+                                        background_normal:''
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color base: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_col_base
+                                        hint_text: "Seleccione el color base de la camiseta"
+                                        values: root.get_colores()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_col_base(spin_col_base.text)
+                                        background_color: "327b8f"
+                                        background_normal: ''
+                                MDLabel:
+                                    text: "¿Quiere un diseño en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_des
+                                    hint_text: "Diseño"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_des(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Diseño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_des
+                                        hint_text: "Diseño"
+                                        values: root.get_disenos()
+
+                                        size:("75dp","25dp")
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        on_text: root.set_des(spin_des.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        on_text: root.set_des(spin_des.text)
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color diseño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_col_des
+                                        hint_text: "Seleccione el color del diseño de la camiseta"
+                                        values: root.get_colores()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_col_des(spin_col_des.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                    TabOpcion:
+                        title: "Texto"
+                        content_text: f"Aquí está el {self.title}"
+                        padding: "10dp"
+
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                MDLabel:
+                                    text: "¿Quiere un diseño en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_txt
+                                    hint_text: "Texto"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_txt(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Contenido: "
+                                        halign: "center"
+                                        walign: "right"
+                                    MDTextField:
+                                        id: txtf_txt_cont
+                                        hint_text: "Texto"
+                                        mode: "rectangle"
+                                        max_text_length: 15
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_cont(txtf_txt_cont.text)
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Posición: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_pos
+                                        hint_text: "Seleccione la posición del texto en la camiseta"
+                                        values: root.get_posiciones()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_pos(spin_txt_pos.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_tam
+                                        hint_text: "Seleccione el tamaño del texto en la camiseta"
+                                        values: root.get_txt_tamanos()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_tam(spin_txt_tam.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_col
+                                        hint_text: "Seleccione el color del texto en la camiseta"
+                                        values: root.get_colores()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_col(spin_txt_col.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tipografía: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_tipo
+                                        hint_text: "Seleccione la tipografía del texto en la camiseta"
+                                        values: root.get_txt_tipo()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_tip(spin_txt_tipo.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                    TabOpcion:
+                        title: "Logo"
+                        content_text: f"Aquí está el {self.title}"
+                        padding: "10dp"
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                MDLabel:
+                                    text: "¿Quiere un logo en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_logo
+                                    hint_text: "Texto"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_logo(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Logo: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo
+                                        hint_text: "Seleccione el logo que deseé"
+                                        values: root.get_logos()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo(spin_logo.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Posición: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_pos
+                                        hint_text: "Seleccione la posición del logo"
+                                        values: root.get_posiciones()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_pos(spin_logo_pos.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_tam
+                                        hint_text: "Seleccione el tamaño del logo"
+                                        values: root.get_logo_tamanos()
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_tam(spin_logo_tam.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Elevación: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_elev
+                                        hint_text: "Seleccione si el texto está delante o detrás del texto"
+                                        values: ['Delante', 'Detrás']
+
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_elev(spin_logo_elev.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: dp(7.5)
+                    size: self.size
+                    MDRectangleFlatButton:
+                        text: "Volver al Menú Principal"
+                        size_hint: 0.2, 0.20
+                        on_release: root.dismiss()
+                    Widget:
+                        size_hint: 0.6, 0.15
+                    MDRectangleFlatButton:
+                        text: "Modificar Diseño"
+                        md_bg_color: hex("#3ca1bd")
+                        text_color: "white"
+                        size_hint: 0.2, 0.20
+                        on_release: root.on_conf_diseno()
+
+<InfoPopup@Popup>:
+    auto_dismiss: False
+    title: 'Confirmación de Borrado'
+    size_hint: (1, 1)
+    resizable: 1
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        orientation: "vertical"
+        adaptive_size: True
+        padding: 0
+        MDTopAppBar:
+            canvas.before:
+                Color:
+                    rgb: hex('#2a3ac9')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            title: "Información de Pedido"
+            elevation: 2
+            type_height: "small"
+            canvas:
+                Color:
+                    rgba: 50, 123, 143, 1
+                Line:
+                    width: dp(5)
+                    points: [self.x, self.width]
+        GridLayout:
+            cols: 2
+            Image:
+                source: 'Assets/Imagenes/PlaceholderShirt.png'
+                size: self.texture_size
+                size_hint_x: 0.35
+                fit_mode: "contain"
+            MDScrollView:
+                do_scroll_y: True
+                do_scroll_x: False
+                size_hint_x: 0.65
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: 700
+                    padding: 0, 0, dp(15), 0
+                    BoxLayout:
+                        orientation: 'vertical'
+                        MDLabel:
+                            text: "Datos del pedido"
+                            haling: "center"
+                            font_style: "H4"
+                        GridLayout:
+                            cols: 2
+                            size_hint: (1,1)
+                            spacing: dp(20)
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Doc ID: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_docid
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            Widget:
+                                size_hint: 0.1, 0.1
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Pedido: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_ped_cod
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Cliente: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_ped_cli
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Fecha de pedido: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_ped_fecha
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Última Actual.: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_ped_fecha_act
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Estado: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_pedido_estado
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding : dp(10)
+                        MDLabel:
+                            text: "Diseño"
+                            haling: "center"
+                            font_style: "H4"
+                        GridLayout:
+                            cols: 2
+                            size_hint: (1,1)
+                            spacing: dp(10)
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Tamaño: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_tam
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Color: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_col_base
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Diseño: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_des
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Color Diseño: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_col_des
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding : dp(20)
+                        MDLabel:
+                            text: "Texto"
+                            haling: "center"
+                            font_style: "H4"
+                        GridLayout:
+                            cols: 2
+                            size_hint: (1,1)
+                            spacing: dp(10)
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Contenido: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_cont
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Color: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_col
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Posición: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_pos
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Tamaño: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_tam
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Tipografía: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_tip
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding : dp(10)
+                        MDLabel:
+                            text: "Logo"
+                            haling: "center"
+                            font_style: "H4"
+                        GridLayout:
+                            cols: 2
+                            size_hint: (1,1)
+                            spacing: dp(10)
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Logo: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_logo
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Posición: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_logo_pos
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Tamaño: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_logo_tam
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                halign: "center"
+                                walign: "center"
+                                MDLabel:
+                                    text: "Elevación: "
+                                    halign: "center"
+                                    walign: "right"
+                                MDLabel:
+                                    id: txtinfo_shirt_txt_elev
+                                    
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size: self.size
+                        padding: dp(7.5)
+                        MDRectangleFlatButton:
+                            text: "Volver al Menú Principal"
+                            size_hint: 0.2, 0.45
+                            on_release: root.dismiss()
+                    #    Widget:
+                    #        size_hint: 0.6, 0.15
+                    #    MDRectangleFlatButton:
+                    #        text: "Modificar Pedido"
+                    #        md_bg_color: hex("#3ca1bd")
+                    #        text_color: "white"
+                    #        size_hint: 0.2, 0.45
+                    #        on_release: root.openModifyPopup()
+                    #        on_release: root.dismiss()
+
+<EditorPopup@Popup>:
+    auto_dismiss: False
+    title: 'Confirgurador de Camisetas'
+    size_hint: (1, 1)
+    resizable: 1
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        orientation: "vertical"
+        adaptive_size: True
+        padding: 0
+        MDTopAppBar:
+            canvas.before:
+                Color:
+                    rgb: hex('#2a3ac9')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            title: "Editor"
+            elevation: 2
+            type_height: "small"
+            canvas:
+                Color:
+                    rgba: 50, 123, 143, 1
+                Line:
+                    width: dp(5)
+                    points: [self.x, self.width]
+        # Fields to add: Tamaño, Diseño, Color/es,
+        # Texto (Contenido, Posición, Tamaño, Rotación, Color, Tipografía), 
+        # Logo/Dibujo (Logo, Subir Logo, Posición, Rotación, Tamaño)
+        GridLayout:
+            cols: 2
+            Image:
+                source: 'Assets/Imagenes/PlaceholderShirt.png'
+                size: self.texture_size
+                fit_mode: "contain"
+                size_hint_x: 0.35
+            BoxLayout:
+                canvas.before:
+                    Color:
+                        rgba: 50, 123, 143, 1
+                    Line:
+                        width: dp(1.5)
+                        points: [self.width, self.height]
+                canvas:
+                    Color:
+                        rgb: hex('#ffffff')
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                orientation: "vertical"
+                adaptive_size: True
+                size_hint_x: 0.65
+                MDTopAppBar:
+                    title: "Opciones de personalización"
+                    elevation: 0
+                    md_bg_color: "#4956cc"
+                    canvas:
+                        Color:
+                            rgba: 50, 123, 143, 1
+                        Line:
+                            width: dp(5)
+                            points: [self.x, self.width]
+                MDTabs:
+                    id: tabs_opciones
+                    allow_stretch: False
+                    fixed_tab_label_width: self.width / 3
+                    do_default_tab: False
+                    background_color: "#4956cc"
+                    indicator_color: "#07c4f7"
+                    tab_indicator_height: "5dp"
+                    TabOpcion:
+                        title: "Diseño"
+                        content_text: f"Aquí está el {self.title}"
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                height: 300
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_tam
+                                        hint_text: "Seleccione un tamaño"
+                                        values: root.get_tamanos()
+                                        size_hint:None,None
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_tam(spin_tam.text)
+                                        background_color:"327b8f"
+                                        background_normal:''
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color base: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_col_base
+                                        hint_text: "Seleccione el color base de la camiseta"
+                                        values: root.get_colores()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_col_base(spin_col_base.text)
+                                        background_color: "327b8f"
+                                        background_normal: ''
+                                MDLabel:
+                                    text: "¿Quiere un diseño en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_des
+                                    hint_text: "Diseño"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_des(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Diseño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_des
+                                        hint_text: "Diseño"
+                                        values: root.get_disenos()
+                                        
+                                        size:("75dp","25dp")
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        on_text: root.set_des(spin_des.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        on_text: root.set_des(spin_des.text)
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color diseño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_col_des
+                                        hint_text: "Seleccione el color del diseño de la camiseta"
+                                        values: root.get_colores()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_col_des(spin_col_des.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                    TabOpcion:
+                        title: "Texto"
+                        content_text: f"Aquí está el {self.title}"
+                        padding: "10dp"
+
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                MDLabel:
+                                    text: "¿Quiere un diseño en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_txt
+                                    hint_text: "Texto"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_txt(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Contenido: "
+                                        halign: "center"
+                                        walign: "right"
+                                    MDTextFieldRect:
+                                        id: txtf_txt_cont
+                                        hint_text: "Texto"
+                                        max_text_length: 20
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_cont(txtf_txt_cont.text)
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Posición: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_pos
+                                        hint_text: "Seleccione la posición del texto en la camiseta"
+                                        values: root.get_posiciones()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_pos(spin_txt_pos.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_tam
+                                        hint_text: "Seleccione el tamaño del texto en la camiseta"
+                                        values: root.get_txt_tamanos()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_tam(spin_txt_tam.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Color: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_col
+                                        hint_text: "Seleccione el color del texto en la camiseta"
+                                        values: root.get_colores()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_col(spin_txt_col.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tipografía: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_txt_tipo
+                                        hint_text: "Seleccione la tipografía del texto en la camiseta"
+                                        values: root.get_txt_tipo()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_txt_tip(spin_txt_tipo.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                    TabOpcion:
+                        title: "Logo"
+                        content_text: f"Aquí está el {self.title}"
+                        padding: "10dp"
+                        MDScrollView:
+                            GridLayout:
+                                cols: 2
+                                padding: 0, 0, "40dp", 0
+                                MDLabel:
+                                    text: "¿Quiere un logo en su camiseta?"
+                                    halign: "center"
+                                    walign: "right"
+                                MDCheckbox:
+                                    id: chk_logo
+                                    hint_text: "Texto"
+                                    size:("75dp","25dp")
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "left"
+                                    background_color: "327b8f"
+                                    background_normal: ''
+                                    on_release: root.on_chk_logo(*args)
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Logo: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo
+                                        hint_text: "Seleccione el logo que deseé"
+                                        values: root.get_logos()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo(spin_logo.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Posición: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_pos
+                                        hint_text: "Seleccione la posición del logo"
+                                        values: root.get_posiciones()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_pos(spin_logo_pos.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Tamaño: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_tam
+                                        hint_text: "Seleccione el tamaño del logo"
+                                        values: root.get_logo_tamanos()
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_tam(spin_logo_tam.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                    halign: "center"
+                                    walign: "center"
+                                    MDLabel:
+                                        text: "Elevación: "
+                                        halign: "center"
+                                        walign: "right"
+                                    Spinner:
+                                        id: spin_logo_elev
+                                        hint_text: "Seleccione si el texto está delante o detrás del texto"
+                                        values: ['Delante', 'Detrás']
+                                        
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                        halign: "center"
+                                        walign: "left"
+                                        size:("75dp","25dp")
+                                        on_text: root.set_logo_elev(spin_logo_elev.text)
+                                        background_color: "327b8f"
+                                        md_bg_color_disabled: "757575"
+                                        background_normal: ''
+                                        disabled: True
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: dp(7.5)
+                    size: self.size
+                    MDRectangleFlatButton:
+                        text: "Volver al Menú Principal"
+                        size_hint: 0.2, 0.20
+                        on_release: root.dismiss()
+                    Widget:
+                        size_hint: 0.6, 0.15
+                    MDRectangleFlatButton:
+                        text: "Confirmar Diseño"
+                        md_bg_color: hex("#3ca1bd")
+                        text_color: "white"
+                        size_hint: 0.2, 0.20
+                        on_release: root.on_conf_diseno()
