@@ -21,3 +21,6 @@ pip install kivymd==1.2.0
 pip install --upgrade firebase-admin
 
 Las credenciales que están dentro del proyecto deberían seguir sirviendo para acceder a al DDBB
+
+****IMPORTANTE****
+No olvidar poner el .json de las credenciales que se manda junto a la entrega en el aula digital en el directorio de Modelo!!!!
