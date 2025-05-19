@@ -631,7 +631,7 @@ class DataTable(MDGridLayout):
             buttons=[
                 MDFlatButton(
                     text='Cancelar',
-                    on_press=self.closeDialog,
+                    on_press=self.exitDeleteConf,
                 ),
                 MDFlatButton(
                     text='Confirmar',
@@ -644,6 +644,9 @@ class DataTable(MDGridLayout):
     def deleteConf(self, obj):
         Firebase.ped_delete_item(glob_cod_ped)
         self.regen_table()
+        self.dialog_del_conf.dismiss()
+
+    def exitDeleteConf(self, obj):
         self.dialog_del_conf.dismiss()
 
     def closeDialog(self, obj):
